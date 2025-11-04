@@ -26,11 +26,15 @@
             js.code += '_--;'
         } else if(code[i] == '#') {
             var chunk = code.slice(i, i+3);
-            if(!/#[a-f0-9]{2}/.test(chunk)) {
+            if(/#[a-f0-9]{2}/.test(chunk)) {
+                js.code += `$[_]=${parseInt(chunk.slice(1,3), 16).toString()};`;
+                i += 2;
+            } else if(/#[a-z]{1}/.test(chunk)) {
+                js.code += `$[_]=${chunk[1]};`;
+                i++;
+            } else {
                 return {success: false};
             }
-            js.code += `$[_]=${parseInt(chunk.slice(1,3), 16).toString()};`;
-            i += 2;
         } else if('+-*/^'.indexOf(code[i]) != -1) {
             var chunk: string = code.slice(i+1, i+3).split('').filter(e=>'{}'.indexOf(e)==-1).join('');
             if(!(/[a-f0-9]{2}/.test(chunk))) {
