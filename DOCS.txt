@@ -1,0 +1,11 @@
+^XX = xor current register with XX
+> = next
++XX = add XX to current register
+-XX = subtract XX from current register
+*XX = multiply current register by XX
+/XX = divide current register by XX
+#YY = set current character of register X (specified by `.X`) to YY
+$XYY = initialize register X and set it to YY ([] for array)
+:X{} = loop through X, use `@` ("character")
+.X = set the current register to X
+_X = log register X
