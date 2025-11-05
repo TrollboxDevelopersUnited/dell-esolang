@@ -5,7 +5,7 @@
 *XX = multiply current register by XX
 /XX = divide current register by XX
 #YY = set current character of register X (specified by `.X`) to YY
-$XYY = initialize register X and set it to YY ([] for array)
+$XYY = initialize register X and set it to YY ([] for array, you can optionally have a 2-digit hexadecemal number in the brackets if you want a specific length)
 :X{} = loop through X, use `@` ("character")
 .X = set the current register to X
 _X = log register X
