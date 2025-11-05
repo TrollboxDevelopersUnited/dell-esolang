@@ -36,8 +36,13 @@
             i++
         } else if(code[i] == '>') {
             js.code += '_++;'
+        } else if(code.slice(i,i+2) == '@{') {
+            js.code += 'if($[_]>0){';
+            i++;
         } else if(code[i] == '<') {
             js.code += '_--;'
+        } else if(code[i] == '!') {
+            js.code += '$[_]=($[_]==0)+0;'
         } else if(code[i] == '#') {
             var chunk = code.slice(i, i+3);
             if(/#[a-f0-9]{2}/.test(chunk)) {
@@ -50,7 +55,7 @@
                 return {success: false};
             }
         } else if('+-*/^'.indexOf(code[i]) != -1) {
-            var chunk: string = code.slice(i+1, i+3).split('').filter(e=>'{}+-*/^'.indexOf(e)==-1).join('');
+            var chunk: string = code.slice(i+1, i+3).split('').filter(e=>'{}+-*/^!<>.#$[]'.indexOf(e)==-1).join('');
             if(!(/[a-f0-9]{2}/.test(chunk))) {
                 js.code += `var _v=${chunk};if(typeof $=='number'){$${code[i]}=_v}else{$[_]${code[i]}=_v}`;
                 i++;
@@ -73,6 +78,6 @@
     for(var i = 0; i < stackKeys.length; i++) {
         js.code = `${stackKeys[i]}=${JSON.stringify(js.stack[stackKeys[i]])},${js.code},${stackKeys[i]}:${stackKeys[i]}`;
     }
-    return {success: true, code: `(function(){${js.code}}})()`};
+    return {success: true, code: `(function(){var ${js.code}}})()`};
 }
 
