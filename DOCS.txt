@@ -12,3 +12,4 @@ _X = log register X
 @{} = if current_item is more then 0, run the expression in brackets
 " " = (it's just a space) literally nothing
 ! = turn the current number into a bit, then flip it
+~X = overwrite current register with user input (question: register X)

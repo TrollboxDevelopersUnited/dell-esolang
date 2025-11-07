@@ -1,5 +1,5 @@
 (typeof module == 'object' ? module.exports : window).compile = function compile(code: string): {success: boolean, code?: string} {
-    var js: {code: string, stack: Record<string, number | number[]>} = {code: '_=0,$=0;', stack: {}};
+    var js: {code: string, stack: Record<string, number | number[]>, currentReg: string} = {code: '_=0,$=0;', stack: {}, currentReg: ''};
 
     for(var i = 0; i < code.length; i++) {
         if(code[i] == '$') {
@@ -26,7 +26,15 @@
                 return {success: false};
             }
             js.code += `$=${chunk[1]};`;
+            js.currentReg = chunk[1];
             i++
+        } else if(code[i] == '~') {
+            var chunk = code.slice(i, i+2);
+            if(!(/\~[a-zA-Z]{1}/.test(chunk) && chunk.length == 2)) {
+                return {success: false};
+            }
+            js.code += `${js.currentReg}=prompt(${chunk[1]}.map(function(e){return String.fromCharCode(e)}).join('')).split('').map(function(e){return e.charCodeAt()});`;
+            // i++;
         } else if(code[i] == '_') {
             var chunk = code.slice(i, i+2);
             if(!(/_[a-zA-Z]{1}/.test(chunk) && chunk.length == 2)) {
